@@ -1,24 +1,26 @@
 #py -m pip install <package> in cmd terminal
 import inflect
+import datetime
 p = inflect.engine()
 
-reminders = ["test", "test2"]
+reminders = []
+dates = []
 
 while True:
     remindLen = len(reminders)
+    isNotEmpty = bool(remindLen)
     print(f"There {p.plural("is", remindLen)} currently {remindLen} {p.plural("reminder",remindLen)} in your list.")
 
     ext = ""
-    if remindLen > 0:
-        ext = ", or 'EDIT' followed by its ID to edit a reminder"
+    if isNotEmpty:
+        ext = ", 'EDIT' followed by its ID to edit a reminder, or 'DELETE' followed by its ID to delete a reminder"
     print("Type 'CREATE' to create one" + ext + ".")
-    print()
 
-    if remindLen > 0:
-        print("ID  |  Reminder")
-        print("----+----------")
+    if isNotEmpty:
+        print("ID  | Date                | Reminder")
+        print("----+---------------------+---------")
         for x in range(remindLen):
-            print(f"{str(x+1).ljust(3)} | {reminders[x]}") #consider using textwrap package to wrap text if it's too long
+            print(f"{str(x+1).ljust(3)} | {str(dates[x]).ljust(19)} | {reminders[x]}") #consider using textwrap package to wrap text if it's too long
 
     print()
 
@@ -27,10 +29,36 @@ while True:
         print("Please enter your reminder.")
         print()
         entry = input()
-        reminders.append(entry)
+        print("Please enter a date and time, if applicable.")
+        inputYear = input("Year: ")
+        inputMonth = input("Month: ")
+        inputDay = input("Day: ")
+        inputHour = input("Hour: ")
+        inputMinute = input("Minute: ")
+
+        test = []
+        try:
+            year = int(inputYear)
+            month = int(inputMonth)
+            day = int(inputDay)
+            hour = int(inputHour)
+            minute = int(inputMinute)
+        except:
+            dates.append("") #need to individually test year, month, etc. and only put in "dates" whichever ones were given values
+        else:
+            entryDate = datetime.datetime(year, month, day, hour, minute)
+            dates.append(entryDate)
+        
+        reminders.append(entry)        
+        print("Reminder successfully added.")
+        print()
     elif "edit" in cmd:
-        id = [int(s) for s in cmd.split() if s.isdigit()][0]
+        id = [int(s) for s in cmd.split() if s.isdigit()][0] #retrieves the id from the input
         print("Please enter your new reminder.")
         print()
         reminders[id-1] = input()
-    # test comment
+    elif "delete" in cmd:
+        id = [int(s) for s in cmd.split() if s.isdigit()][0]
+        reminders.pop(id-1)
+        print("Reminder successfully deleted.")
+        print()
