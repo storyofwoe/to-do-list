@@ -1,7 +1,10 @@
 # to-do-list
 A CLI-based to-do list written in Python.
 
-Currently has support for creation of new reminders and edits of existing reminders.
+Currently has support for:
+* Creation of new reminders
+* Edits of existing reminders
+* Deletion of reminders
 
 ## Still to come
 * Deletion of reminders
