@@ -3,9 +3,9 @@ import inflect
 p = inflect.engine()
 
 reminders = ["test", "test2"]
-remindLen = len(reminders)
 
 while True:
+    remindLen = len(reminders)
     print(f"There {p.plural("is", remindLen)} currently {remindLen} {p.plural("reminder",remindLen)} in your list.")
 
     ext = ""
@@ -24,6 +24,13 @@ while True:
 
     cmd = input().lower()
     if cmd == "create":
-        print("Success!")
-    elif cmd == "edit":
-        pass
+        print("Please enter your reminder.")
+        print()
+        entry = input()
+        reminders.append(entry)
+    elif "edit" in cmd:
+        id = [int(s) for s in cmd.split() if s.isdigit()][0]
+        print("Please enter your new reminder.")
+        print()
+        reminders[id-1] = input()
+    # test comment
