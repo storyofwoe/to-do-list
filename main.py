@@ -1,10 +1,18 @@
 #py -m pip install <package> in cmd terminal
-import inflect
+import inflect #manual install required
 import datetime
 p = inflect.engine()
+import json
+import sys
 
-reminders = ["test"]
-dates = [""]
+try:
+    with open("reminders.json", "r") as file:
+        remindersDict = json.load(file)
+except:
+    remindersDict = {}
+
+reminders = list(remindersDict.keys())
+dates = list(remindersDict.values())
 
 while True:
     remindLen = len(reminders)
@@ -15,8 +23,8 @@ while True:
 
     ext = ""
     if isNotEmpty:
-        ext = ", 'EDIT' followed by its ID to edit a reminder, or 'DELETE' followed by its ID to delete a reminder"
-    print("Type 'CREATE' to create one" + ext + ".")
+        ext = ", 'EDIT' followed by its ID to edit a reminder, 'DELETE' followed by its ID to delete a reminder"
+    print("Type 'CREATE' to create one" + ext + ", or EXIT to close.")
 
     if isNotEmpty:
         print("ID  | Date                      | Reminder")
@@ -85,6 +93,12 @@ while True:
         reminders.append(entry)        
         print("Reminder successfully added.")
         print()
+
+    elif "exit" in cmd:
+        remindersDict = dict(zip(reminders, dates))
+        with open("reminders.json", "w") as file:
+            json.dump(remindersDict, file)
+        sys.exit()
 
     try:
         cmdSplit = [int(s) for s in cmd.split() if s.isdigit()]
