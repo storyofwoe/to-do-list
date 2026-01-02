@@ -107,6 +107,7 @@ while True:
         else:
             if len(cmdSplit) == 1:
                 remindId = cmdSplit[0]
-                reminders.pop(remindId-1)
-                print("Reminder successfully deleted.")
-                print()
+                if remindId <= remindLen:                
+                    reminders.pop(remindId-1)
+                    print("Reminder successfully deleted.")
+                    print()
