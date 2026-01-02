@@ -88,18 +88,24 @@ while True:
 
     elif "edit" in cmd:
         try:
-            cmdSplit = [int(s) for s in cmd.split() if s.isdigit()]
-            if len(cmdSplit) == 1:
-                remindId = cmdSplit[0] #retrieves the id from the input
+            cmdSplit = [int(s) for s in cmd.split() if s.isdigit()]            
         except:
             pass
         else:
-            print("Please enter your new reminder.")
-            print()
-            reminders[remindId-1] = input()
+            if len(cmdSplit) == 1:
+                remindId = cmdSplit[0] #retrieves the id from the input
+                print("Please enter your new reminder.")
+                print()
+                reminders[remindId-1] = input()
 
     elif "delete" in cmd:
-        remindId = [int(s) for s in cmd.split() if s.isdigit()][0]
-        reminders.pop(remindId-1)
-        print("Reminder successfully deleted.")
-        print()
+        try:
+            cmdSplit = [int(s) for s in cmd.split() if s.isdigit()]
+        except:
+            pass
+        else:
+            if len(cmdSplit) == 1:
+                remindId = cmdSplit[0]
+                reminders.pop(remindId-1)
+                print("Reminder successfully deleted.")
+                print()
