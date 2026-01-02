@@ -6,8 +6,8 @@ Currently has support for:
 * Edits of existing reminders
 * Deletion of reminders
 * Due-by dates
+* Local save/load of reminder list
 
 ## Still to come
-* Local save/load of reminder list
 * Sorting list by date
 * GUI
