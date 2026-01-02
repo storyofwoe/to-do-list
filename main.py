@@ -3,8 +3,8 @@ import inflect
 import datetime
 p = inflect.engine()
 
-reminders = []
-dates = []
+reminders = ["test"]
+dates = [""]
 
 while True:
     remindLen = len(reminders)
@@ -85,13 +85,29 @@ while True:
         reminders.append(entry)        
         print("Reminder successfully added.")
         print()
+
     elif "edit" in cmd:
-        id = [int(s) for s in cmd.split() if s.isdigit()][0] #retrieves the id from the input
-        print("Please enter your new reminder.")
-        print()
-        reminders[id-1] = input()
+        try:
+            cmdSplit = [int(s) for s in cmd.split() if s.isdigit()]            
+        except:
+            pass
+        else:
+            if len(cmdSplit) == 1:
+                remindId = cmdSplit[0] #retrieves the id from the input, only if 1 number was given
+                if remindId <= remindLen: #makes sure id given is in the bounds of the length of the reminder list
+                    print("Please enter your new reminder.")
+                    print()
+                    reminders[remindId-1] = input()
+
     elif "delete" in cmd:
-        id = [int(s) for s in cmd.split() if s.isdigit()][0]
-        reminders.pop(id-1)
-        print("Reminder successfully deleted.")
-        print()
+        try:
+            cmdSplit = [int(s) for s in cmd.split() if s.isdigit()]
+        except:
+            pass
+        else:
+            if len(cmdSplit) == 1:
+                remindId = cmdSplit[0]
+                if remindId <= remindLen:                
+                    reminders.pop(remindId-1)
+                    print("Reminder successfully deleted.")
+                    print()
