@@ -14,6 +14,54 @@ except:
 reminders = list(remindersDict.keys())
 dates = list(remindersDict.values())
 
+def reminderDateToString():
+    print("Please enter a date and time, if applicable.")
+    year = input("Year: ")
+    month = input("Month: ")
+    day = input("Day: ")
+    hour = input("Hour: ")
+    minute = input("Minute: ")
+    try: #records input as number if non-empty
+        intMinute = int(minute)
+    except:
+        intMinute = None
+    finally:
+        try:
+            intHour = int(hour)
+        except:
+            intHour = None
+        finally:
+            try:
+                intDay = int(day)
+            except:
+                intDay = None
+            finally:
+                try:
+                    intMonth = int(month)
+                except:
+                    intMonth = None
+                finally:
+                    try:
+                        intYear = int(year)
+                    except:
+                        intYear = None
+
+    #try and figure out how to only include given date/time in final list, using something that's a bit cleaner than below
+    parts = []
+    if intYear and intMonth:
+        if intDay:
+            dt = datetime.date(intYear, intMonth, intDay)
+            parts.append(dt.strftime("%d %B %Y"))
+        else:
+            dt = datetime.date(intYear, intMonth, 1)
+            parts.append(dt.strftime("%B %Y"))
+        if intHour is not None and intMinute is not None:
+            dt = datetime.datetime(1, 1, 1, intHour, intMinute)
+            parts.append(dt.strftime("%H:%M"))
+    dateStr = " at ".join(x for x in parts if x)
+    return dateStr
+    #dates.append(dateStr)   
+
 while True:
     remindLen = len(reminders)
     isNotEmpty = bool(remindLen)
@@ -37,53 +85,9 @@ while True:
     cmd = input().lower()
     if cmd == "create":
         print("Please enter your reminder.")
-        print()
-        entry = input()
-        print("Please enter a date and time, if applicable.")
-        inputYear = input("Year: ")
-        inputMonth = input("Month: ")
-        inputDay = input("Day: ")
-        inputHour = input("Hour: ")
-        inputMinute = input("Minute: ")
+        entry = input()    
 
-        try: #records input as number if non-empty
-            intMinute = int(inputMinute)
-        except:
-            intMinute = None
-        finally:
-            try:
-                intHour = int(inputHour)
-            except:
-                intHour = None
-            finally:
-                try:
-                    intDay = int(inputDay)
-                except:
-                    intDay = None
-                finally:
-                    try:
-                        intMonth = int(inputMonth)
-                    except:
-                        intMonth = None
-                    finally:
-                        try:
-                            intYear = int(inputYear)
-                        except:
-                            intYear = None
-        #try and figure out how to only include given date/time in final list, using something that's a bit cleaner than below
-        parts = []
-        if intYear and intMonth:
-            if intDay:
-                dt = datetime.date(intYear, intMonth, intDay)
-                parts.append(dt.strftime("%d %B %Y"))
-            else:
-                dt = datetime.date(intYear, intMonth, 1)
-                parts.append(dt.strftime("%B %Y"))
-        if intHour is not None and intMinute is not None:
-            dt = datetime.datetime(1, 1, 1, intHour, intMinute)
-            parts.append(dt.strftime("%H:%M"))
-        dateStr = " at ".join(x for x in parts if x)
-        dates.append(dateStr)
+        dates.append(reminderDateToString())
 
         # inputtedDates = dict(year = intYear, month = intMonth, day = intDay, hour = intHour, minute = intMinute)
         # values = list(inputtedDates.values())
@@ -109,9 +113,18 @@ while True:
             remindId = cmdSplit[0]
             if remindId <= remindLen:
                 if "edit" in cmd:
-                    print("Please enter your new reminder.")
-                    print()
-                    reminders[remindId-1] = input()
+                    print("Type 'CONTENT' to edit the content of your reminder, 'DATE' to edit the date of the reminder, or 'BACK' to go back.")
+                    editCmd = input().lower()
+                    if "back" in editCmd:
+                        pass
+                    elif "content" in editCmd:
+                        print("Please enter your new reminder.")
+                        reminders[remindId-1] = input()
+                        print("Reminder successfully edited.")
+                        print()
+                    elif "date" in editCmd:
+                        dates[remindId-1] = reminderDateToString()
+                    
                 elif "delete" in cmd:
                     reminders.pop(remindId-1)
                     print("Reminder successfully deleted.")
