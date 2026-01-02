@@ -9,5 +9,6 @@ Currently has support for:
 * Local save/load of reminder list
 
 ## Still to come
+* Edit due by date
 * Sorting list by date
 * GUI
