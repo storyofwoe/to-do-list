@@ -74,8 +74,8 @@ while True:
         if intHour is not None and intMinute is not None:
             dt = datetime.datetime(1, 1, 1, intHour, intMinute)
             parts.append(dt.strftime("%H:%M"))
-        date_str = " at ".join(x for x in parts if x)
-        dates.append(date_str)
+        dateStr = " at ".join(x for x in parts if x)
+        dates.append(dateStr)
 
         # inputtedDates = dict(year = intYear, month = intMonth, day = intDay, hour = intHour, minute = intMinute)
         # values = list(inputtedDates.values())
