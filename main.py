@@ -85,11 +85,17 @@ while True:
         reminders.append(entry)        
         print("Reminder successfully added.")
         print()
+
     elif "edit" in cmd:
-        id = [int(s) for s in cmd.split() if s.isdigit()][0] #retrieves the id from the input
-        print("Please enter your new reminder.")
-        print()
-        reminders[id-1] = input()
+        try:
+            id = [int(s) for s in cmd.split() if s.isdigit()][0] #retrieves the id from the input
+        except:
+            pass
+        else:
+            print("Please enter your new reminder.")
+            print()
+            reminders[id-1] = input()
+
     elif "delete" in cmd:
         id = [int(s) for s in cmd.split() if s.isdigit()][0]
         reminders.pop(id-1)
