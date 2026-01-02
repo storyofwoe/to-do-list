@@ -93,10 +93,11 @@ while True:
             pass
         else:
             if len(cmdSplit) == 1:
-                remindId = cmdSplit[0] #retrieves the id from the input
-                print("Please enter your new reminder.")
-                print()
-                reminders[remindId-1] = input()
+                remindId = cmdSplit[0] #retrieves the id from the input, only if 1 number was given
+                if remindId <= remindLen: #makes sure id given is in the bounds of the length of the reminder list
+                    print("Please enter your new reminder.")
+                    print()
+                    reminders[remindId-1] = input()
 
     elif "delete" in cmd:
         try:
