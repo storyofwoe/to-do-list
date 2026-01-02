@@ -9,6 +9,8 @@ dates = []
 while True:
     remindLen = len(reminders)
     isNotEmpty = bool(remindLen)
+    today = datetime.datetime.now()
+
     print(f"There {p.plural("is", remindLen)} currently {remindLen} {p.plural("reminder",remindLen)} in your list.")
 
     ext = ""
@@ -17,10 +19,10 @@ while True:
     print("Type 'CREATE' to create one" + ext + ".")
 
     if isNotEmpty:
-        print("ID  | Date                | Reminder")
-        print("----+---------------------+---------")
+        print("ID  | Date                      | Reminder")
+        print("----+---------------------------+---------")
         for x in range(remindLen):
-            print(f"{str(x+1).ljust(3)} | {str(dates[x]).ljust(19)} | {reminders[x]}") #consider using textwrap package to wrap text if it's too long
+            print(f"{str(x+1).ljust(3)} | {str(dates[x]).ljust(25)} | {reminders[x]}") #consider using textwrap package to wrap text if it's too long
 
     print()
 
@@ -36,18 +38,49 @@ while True:
         inputHour = input("Hour: ")
         inputMinute = input("Minute: ")
 
-        test = []
-        try:
-            year = int(inputYear)
-            month = int(inputMonth)
-            day = int(inputDay)
-            hour = int(inputHour)
-            minute = int(inputMinute)
+        try: #records input as number if non-empty
+            intMinute = int(inputMinute)
         except:
-            dates.append("") #need to individually test year, month, etc. and only put in "dates" whichever ones were given values
-        else:
-            entryDate = datetime.datetime(year, month, day, hour, minute)
-            dates.append(entryDate)
+            intMinute = None
+        finally:
+            try:
+                intHour = int(inputHour)
+            except:
+                intHour = None
+            finally:
+                try:
+                    intDay = int(inputDay)
+                except:
+                    intDay = None
+                finally:
+                    try:
+                        intMonth = int(inputMonth)
+                    except:
+                        intMonth = None
+                    finally:
+                        try:
+                            intYear = int(inputYear)
+                        except:
+                            intYear = None
+        #try and figure out how to only include given date/time in final list, using something that's a bit cleaner than below
+        parts = []
+        if intYear and intMonth:
+            if intDay:
+                dt = datetime.date(intYear, intMonth, intDay)
+                parts.append(dt.strftime("%d %B %Y"))
+            else:
+                dt = datetime.date(intYear, intMonth, 1)
+                parts.append(dt.strftime("%B %Y"))
+        if intHour is not None and intMinute is not None:
+            dt = datetime.datetime(1, 1, 1, intHour, intMinute)
+            parts.append(dt.strftime("%H:%M"))
+        date_str = " at ".join(x for x in parts if x)
+        dates.append(date_str)
+
+        # inputtedDates = dict(year = intYear, month = intMonth, day = intDay, hour = intHour, minute = intMinute)
+        # values = list(inputtedDates.values())
+        # dateParts = [x for x in values if x is not None] #forms list of values that aren't None
+        # print(dateParts) 
         
         reminders.append(entry)        
         print("Reminder successfully added.")
