@@ -86,28 +86,19 @@ while True:
         print("Reminder successfully added.")
         print()
 
-    elif "edit" in cmd:
-        try:
-            cmdSplit = [int(s) for s in cmd.split() if s.isdigit()]            
-        except:
-            pass
-        else:
-            if len(cmdSplit) == 1:
-                remindId = cmdSplit[0] #retrieves the id from the input, only if 1 number was given
-                if remindId <= remindLen: #makes sure id given is in the bounds of the length of the reminder list
+    try:
+        cmdSplit = [int(s) for s in cmd.split() if s.isdigit()]
+    except:
+        pass
+    else:
+        if len(cmdSplit) == 1:
+            remindId = cmdSplit[0]
+            if remindId <= remindLen:
+                if "edit" in cmd:
                     print("Please enter your new reminder.")
                     print()
                     reminders[remindId-1] = input()
-
-    elif "delete" in cmd:
-        try:
-            cmdSplit = [int(s) for s in cmd.split() if s.isdigit()]
-        except:
-            pass
-        else:
-            if len(cmdSplit) == 1:
-                remindId = cmdSplit[0]
-                if remindId <= remindLen:                
+                elif "delete" in cmd:
                     reminders.pop(remindId-1)
                     print("Reminder successfully deleted.")
                     print()
