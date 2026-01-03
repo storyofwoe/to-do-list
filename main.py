@@ -12,7 +12,8 @@ except:
     remindersDict = {}
 
 reminders = list(remindersDict.keys())
-dates = list(remindersDict.values())
+strDates = list(remindersDict.values())
+#dates = [0 for x in strDates]
 
 def reminderDateToString():
     print("Please enter a date and time, if applicable.")
@@ -56,7 +57,7 @@ def reminderDateToString():
             dt = datetime.date(intYear, intMonth, 1)
             parts.append(dt.strftime("%B %Y"))
         if intHour is not None and intMinute is not None:
-            dt = datetime.datetime(1, 1, 1, intHour, intMinute)
+            dt = datetime.time(intHour, intMinute)
             parts.append(dt.strftime("%H:%M"))
     dateStr = " at ".join(x for x in parts if x)
     return dateStr
@@ -78,7 +79,7 @@ while True:
         print("ID  | Date                      | Reminder")
         print("----+---------------------------+---------")
         for x in range(remindLen):
-            print(f"{str(x+1).ljust(3)} | {str(dates[x]).ljust(25)} | {reminders[x]}") #consider using textwrap package to wrap text if it's too long
+            print(f"{str(x+1).ljust(3)} | {str(strDates[x]).ljust(25)} | {reminders[x]}") #consider using textwrap package to wrap text if it's too long
 
     print()
 
@@ -87,7 +88,7 @@ while True:
         print("Please enter your reminder.")
         entry = input()    
 
-        dates.append(reminderDateToString())
+        strDates.append(reminderDateToString())
 
         # inputtedDates = dict(year = intYear, month = intMonth, day = intDay, hour = intHour, minute = intMinute)
         # values = list(inputtedDates.values())
@@ -99,7 +100,7 @@ while True:
         print()
 
     elif "exit" in cmd:
-        remindersDict = dict(zip(reminders, dates))
+        remindersDict = dict(zip(reminders, strDates))
         with open("reminders.json", "w") as file:
             json.dump(remindersDict, file)
         sys.exit()
@@ -123,7 +124,7 @@ while True:
                         print("Reminder successfully edited.")
                         print()
                     elif "date" in editCmd:
-                        dates[remindId-1] = reminderDateToString()
+                        strDates[remindId-1] = reminderDateToString()
                     
                 elif "delete" in cmd:
                     reminders.pop(remindId-1)
